@@ -4,6 +4,7 @@
  */
 
 import { eulerModPower } from "./math.js";
+import { salvarNoHistorico, renderHistorico } from "./history.js";
 
 /** Mostra mensagem de erro no painel de resultado */
 function showError(output, msg) {
@@ -37,6 +38,14 @@ function showResult(output, res) {
   output.hidden = false;
 }
 
+/** Preenche os campos com uma entrada do histórico */
+function preencherCampos({ a, b, n }) {
+  document.getElementById("base").value = a;
+  document.getElementById("exp").value = b;
+  document.getElementById("mod").value = n;
+  document.getElementById("base").focus();
+}
+
 /** Lê os campos, valida e chama o cálculo */
 export function calcular() {
   const a = parseInt(document.getElementById("base").value, 10);
@@ -57,6 +66,9 @@ export function calcular() {
   }
 
   showResult(output, res);
+
+  salvarNoHistorico({ a, b, n, result: res.result, canUseEuler: res.canUseEuler });
+  renderHistorico(preencherCampos);
 }
 
 /** Inicializa os listeners de eventos */
@@ -68,4 +80,6 @@ export function inicializar() {
       if (e.key === "Enter") calcular();
     });
   });
+
+  renderHistorico(preencherCampos);
 }

@@ -18,8 +18,8 @@ localPort = 21285
 run = "pnpm --filter @workspace/calculadora-modular run dev"
 
 [services.production]
-build = [ "pnpm", "--filter", "@workspace/calculadora-modular", "run", "build" ]
-publicDir = "artifacts/calculadora-modular/dist/public"
+build = [ "pnpm", "--filter", "@workspace/calculadora-modular", "run", "build:pages" ]
+publicDir = "calculadora-modular/dist"
 serve = "static"
 
 [[services.production.rewrites]]

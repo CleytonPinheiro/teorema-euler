@@ -4,11 +4,9 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "lib": ["ES2020", "DOM"],
-    "types": ["node", "vite/client"],
     "allowJs": true,
     "checkJs": false,
-    "noEmit": true,
-    "strict": false
+    "noEmit": true
   },
-  "include": ["vite.config.ts"]
+  "include": ["vite.config.ts", "vite.pages.config.ts"]
 }

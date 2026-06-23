@@ -6,15 +6,26 @@
 import { eulerModPower } from "./math.js";
 import { salvarNoHistorico, renderHistorico } from "./history.js";
 
-/** Mostra mensagem de erro no painel de resultado */
-function showError(output, msg) {
-  output.className = "result-card error";
-  output.textContent = msg;
-  output.hidden = false;
+/* ── Referências ao modal ──────────────────────────────────────── */
+const modal     = () => document.getElementById("modal");
+const modalBody = () => document.getElementById("modal-body");
+
+/** Abre o modal com conteúdo HTML */
+function abrirModal(html) {
+  modalBody().innerHTML = html;
+  modal().hidden = false;
+  document.body.classList.add("modal-open");
+  modal().querySelector(".modal-close")?.focus();
 }
 
-/** Monta e exibe o painel de resultado com passo a passo */
-function showResult(output, res) {
+/** Fecha o modal */
+function fecharModal() {
+  modal().hidden = true;
+  document.body.classList.remove("modal-open");
+}
+
+/** Monta o HTML do resultado para o modal */
+function buildResultHTML(a, b, n, res) {
   const badgeHTML = res.canUseEuler
     ? `<span class="badge badge-success">Teorema de Euler aplicado</span>`
     : `<span class="badge badge-neutral">Exponenciação modular rápida</span>`;
@@ -23,19 +34,32 @@ function showResult(output, res) {
     .map(s => `<li class="step-item">${s}</li>`)
     .join("");
 
-  output.className = "result-card";
-  output.innerHTML = `
-    <div class="result-header">
-      <span class="result-label">Resultado</span>
-      <span class="result-value">${res.result}</span>
+  return `
+    <div class="modal-result-header">
+      <div class="modal-expr">
+        ${a}<sup>${b}</sup> mod ${n}
+      </div>
+      <div class="modal-result-value">${res.result}</div>
+      <div class="modal-badge">${badgeHTML}</div>
     </div>
-    <div class="euler-badge">${badgeHTML}</div>
-    <div class="steps-box">
+    <div class="modal-steps">
       <p class="steps-title">Passo a passo</p>
       <ol class="steps-list">${stepsHTML}</ol>
     </div>
   `;
-  output.hidden = false;
+}
+
+/** Mostra erro inline (abaixo do botão) */
+function showError(msg) {
+  const el = document.getElementById("inline-error");
+  el.textContent = msg;
+  el.hidden = false;
+}
+
+function clearError() {
+  const el = document.getElementById("inline-error");
+  el.textContent = "";
+  el.hidden = true;
 }
 
 /** Preenche os campos com uma entrada do histórico */
@@ -51,21 +75,22 @@ export function calcular() {
   const a = parseInt(document.getElementById("base").value, 10);
   const b = parseInt(document.getElementById("exp").value, 10);
   const n = parseInt(document.getElementById("mod").value, 10);
-  const output = document.getElementById("output");
+
+  clearError();
 
   if (isNaN(a) || isNaN(b) || isNaN(n)) {
-    showError(output, "Preencha todos os campos corretamente.");
+    showError("Preencha todos os campos corretamente.");
     return;
   }
 
   const res = eulerModPower(a, b, n);
 
   if ("error" in res) {
-    showError(output, res.error);
+    showError(res.error);
     return;
   }
 
-  showResult(output, res);
+  abrirModal(buildResultHTML(a, b, n, res));
 
   salvarNoHistorico({ a, b, n, result: res.result, canUseEuler: res.canUseEuler });
   renderHistorico(preencherCampos);
@@ -79,6 +104,19 @@ export function inicializar() {
     input.addEventListener("keydown", e => {
       if (e.key === "Enter") calcular();
     });
+  });
+
+  /* Fechar modal */
+  document.getElementById("modal").addEventListener("click", e => {
+    if (e.target === e.currentTarget) fecharModal();
+  });
+
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") fecharModal();
+  });
+
+  document.addEventListener("click", e => {
+    if (e.target.closest(".modal-close")) fecharModal();
   });
 
   renderHistorico(preencherCampos);

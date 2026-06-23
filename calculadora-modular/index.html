@@ -10,6 +10,25 @@
   </head>
   <body>
 
+    <!-- ══════════════════════════════════════════════════════════
+         MODAL DE RESULTADO
+    ══════════════════════════════════════════════════════════ -->
+    <div id="modal" class="modal-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-card">
+
+        <div class="modal-header">
+          <h2 id="modal-title" class="modal-title">Resultado</h2>
+          <button class="modal-close" aria-label="Fechar">✕</button>
+        </div>
+
+        <div id="modal-body" class="modal-content"></div>
+
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════
+         PÁGINA
+    ══════════════════════════════════════════════════════════ -->
     <div class="page-wrapper">
 
       <div class="page-content">
@@ -51,7 +70,7 @@
 
             <button id="btn-calcular" class="calc-button">Calcular</button>
 
-            <div id="output" class="result-card" hidden></div>
+            <p id="inline-error" class="inline-error" hidden></p>
 
           </div>
 
@@ -172,14 +191,14 @@
 
         </aside>
 
-      </div><!-- /page-content -->
+      </div>
 
       <footer class="page-footer">
         <p>Desenvolvido por <strong>Helen Daiane</strong></p>
         <p>Mestranda no <strong>ProfMat / UEM — 2026</strong></p>
       </footer>
 
-    </div><!-- /page-wrapper -->
+    </div>
 
     <script type="module" src="./src/main.js"></script>
 

@@ -28,7 +28,8 @@ body {
   height: 100%;
   overflow: hidden;
   font-family: Arial, sans-serif;
-  background-color: var(--bg);
+  background: linear-gradient(150deg, #ede7f6 0%, #f3ebfc 45%, #e8eaf6 100%);
+  background-attachment: fixed;
   color: var(--text);
   line-height: 1.6;
 }

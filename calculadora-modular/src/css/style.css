@@ -32,6 +32,132 @@ body {
   line-height: 1.6;
 }
 
+/* ══════════════════════════════════════════════════════════════
+   BARRA DE TÍTULO
+══════════════════════════════════════════════════════════════ */
+.titlebar {
+  flex-shrink: 0;
+  height: 56px;
+  background: linear-gradient(90deg, var(--primary-dark) 0%, #6a1b9a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  gap: 16px;
+  box-shadow: 0 2px 8px rgba(74, 20, 140, 0.35);
+  z-index: 10;
+}
+
+/* Brand — esquerda */
+.titlebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.titlebar-icon {
+  font-size: 1.5rem;
+  color: #fff;
+  opacity: 0.9;
+  flex-shrink: 0;
+}
+
+.titlebar-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.titlebar-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: 0.01em;
+}
+
+.titlebar-sub {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 0.03em;
+}
+
+/* Actions — direita */
+.titlebar-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.titlebar-author {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.author-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.author-meta {
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.02em;
+}
+
+.titlebar-divider {
+  width: 1px;
+  height: 28px;
+  background: rgba(255,255,255,0.2);
+}
+
+/* Botão de toggle do sidebar */
+.titlebar-toggle {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.20);
+  border-radius: 6px;
+  color: rgba(255,255,255,0.85);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 5px 12px 5px 9px;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.titlebar-toggle:hover {
+  background: rgba(255,255,255,0.20);
+  border-color: rgba(255,255,255,0.40);
+  color: #fff;
+}
+
+.titlebar-toggle.is-active {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.50);
+}
+
+.toggle-panel-icon {
+  width: 20px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   LAYOUT
+══════════════════════════════════════════════════════════════ */
+
 /* ── Wrapper externo — ocupa o viewport inteiro ──────────────── */
 .page-wrapper {
   height: 100vh;
@@ -46,13 +172,25 @@ body {
   overflow: hidden;
   display: grid;
   grid-template-columns: 1fr 360px;
+  transition: grid-template-columns 0.28s ease;
+}
+
+/* Sidebar oculto */
+.page-content.sidebar-hidden {
+  grid-template-columns: 1fr 0px;
+}
+
+.page-content.sidebar-hidden .theory-sidebar {
+  overflow: hidden;
+  border-left: none;
+  pointer-events: none;
 }
 
 /* ── Coluna principal — rola de forma independente ───────────── */
 .page-main {
   min-width: 0;
   overflow-y: auto;
-  padding: 40px 32px 0;
+  padding: 32px 32px 0;
   display: flex;
   flex-direction: column;
   scrollbar-width: thin;
@@ -63,6 +201,13 @@ body {
 .page-main::-webkit-scrollbar-thumb {
   background: var(--border);
   border-radius: 10px;
+}
+
+/* Container interno da main para limitar largura */
+.main-inner {
+  max-width: 560px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 /* ── Cabeçalho ───────────────────────────────────────────────── */
@@ -580,21 +725,36 @@ body.modal-open { overflow: hidden; }
 @media (max-width: 860px) {
   html, body { overflow: auto; height: auto; }
 
-  .page-wrapper {
-    height: auto;
-    overflow: visible;
-  }
+  .page-wrapper { height: auto; overflow: visible; }
+
+  /* Titlebar compacta em mobile */
+  .titlebar { height: auto; padding: 10px 14px; gap: 10px; }
+  .titlebar-author { display: none; }
+  .titlebar-divider { display: none; }
+  .titlebar-sub { display: none; }
+  .titlebar-title { font-size: 0.88rem; }
 
   .page-content {
     grid-template-columns: 1fr;
     overflow: visible;
     flex: none;
+    transition: none;
+  }
+
+  .page-content.sidebar-hidden {
+    grid-template-columns: 1fr;
+  }
+
+  .page-content.sidebar-hidden .theory-sidebar {
+    display: none;
   }
 
   .page-main {
     overflow-y: visible;
-    padding: 32px 16px 0;
+    padding: 24px 16px 0;
   }
+
+  .main-inner { max-width: 100%; }
 
   .theory-sidebar {
     border-left: none;
@@ -603,8 +763,6 @@ body.modal-open { overflow: hidden; }
   }
 
   .page-footer { margin-top: 40px; }
-
-  .page-title { font-size: 1.4rem; }
   .calculator-card { padding: 20px 16px 24px; }
   .modal-result-value { font-size: 3rem; }
 }

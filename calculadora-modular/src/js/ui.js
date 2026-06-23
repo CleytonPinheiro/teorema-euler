@@ -96,6 +96,28 @@ export function calcular() {
   renderHistorico(preencherCampos);
 }
 
+/* ── Toggle do sidebar ─────────────────────────────────────────── */
+function inicializarToggleSidebar() {
+  const btn     = document.getElementById("btn-toggle-sidebar");
+  const content = document.querySelector(".page-content");
+
+  function aplicarEstado(oculto) {
+    content.classList.toggle("sidebar-hidden", oculto);
+    btn.setAttribute("aria-pressed", String(oculto));
+    btn.setAttribute("aria-label", oculto ? "Exibir painel de teoria" : "Ocultar painel de teoria");
+    btn.classList.toggle("is-active", oculto);
+  }
+
+  const salvo = sessionStorage.getItem("sidebar-hidden") === "1";
+  aplicarEstado(salvo);
+
+  btn.addEventListener("click", () => {
+    const agora = !content.classList.contains("sidebar-hidden");
+    aplicarEstado(agora);
+    sessionStorage.setItem("sidebar-hidden", agora ? "1" : "0");
+  });
+}
+
 /** Inicializa os listeners de eventos */
 export function inicializar() {
   document.getElementById("btn-calcular").addEventListener("click", calcular);
@@ -118,6 +140,8 @@ export function inicializar() {
   document.addEventListener("click", e => {
     if (e.target.closest(".modal-close")) fecharModal();
   });
+
+  inicializarToggleSidebar();
 
   renderHistorico(preencherCampos);
 }

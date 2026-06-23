@@ -35,6 +35,9 @@ jobs:
       - name: Build
         run: pnpm run build:pages
 
+      - name: Desativar Jekyll
+        run: touch dist/.nojekyll
+
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v5
 

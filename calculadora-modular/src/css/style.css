@@ -20,12 +20,13 @@
 /* ── Reset ───────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html, body {
+html {
   height: 100%;
-  overflow: hidden;
 }
 
 body {
+  height: 100%;
+  overflow: hidden;
   font-family: Arial, sans-serif;
   background-color: var(--bg);
   color: var(--text);
@@ -723,7 +724,8 @@ body.modal-open { overflow: hidden; }
 
 /* ── Responsivo ──────────────────────────────────────────────── */
 @media (max-width: 860px) {
-  html, body { overflow: auto; height: auto; }
+  html, body { height: auto; }
+  body { overflow: auto; }
 
   .page-wrapper { height: auto; overflow: visible; }
 

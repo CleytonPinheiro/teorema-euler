@@ -31,11 +31,9 @@ jobs:
 
       - name: Instalar dependências
         run: pnpm install
-        working-directory: calculadora-modular
 
       - name: Build
         run: pnpm run build:pages
-        working-directory: calculadora-modular
 
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v5
@@ -43,7 +41,7 @@ jobs:
       - name: Enviar artefato
         uses: actions/upload-pages-artifact@v3
         with:
-          path: calculadora-modular/dist
+          path: dist
 
   deploy:
     needs: build

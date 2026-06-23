@@ -1,0 +1,235 @@
+/* ═══════════════════════════════════════════════════════════════
+   Calculadora de Potências Modulares — Helen Daiane / ProfMat UEM
+   Paleta: #f3ebfc fundo · #4a148c título · #6a1b9a primário
+═══════════════════════════════════════════════════════════════ */
+
+:root {
+  --bg:           #f3ebfc;
+  --surface:      #ffffff;
+  --surface-2:    #f8f5fc;
+  --border:       #e1d5f5;
+  --border-input: #b39ddb;
+  --primary:      #6a1b9a;
+  --primary-dark: #4a148c;
+  --text:         #333333;
+  --text-muted:   #5e35b1;
+  --radius:       6px;
+  --shadow:       0 2px 8px rgba(74, 20, 140, 0.10);
+}
+
+/* ── Reset ───────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── Layout ──────────────────────────────────────────────────── */
+.page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px 0;
+}
+
+.page-main {
+  width: 100%;
+  max-width: 660px;
+  flex: 1;
+}
+
+/* ── Cabeçalho ───────────────────────────────────────────────── */
+.page-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.header-icon {
+  font-size: 2.4rem;
+  color: var(--primary);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.page-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 8px;
+}
+
+.page-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* ── Card da calculadora ─────────────────────────────────────── */
+.calculator-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 28px 28px 32px;
+  border: 1px solid var(--border);
+}
+
+/* ── Campos ──────────────────────────────────────────────────── */
+.field-group {
+  margin-bottom: 16px;
+}
+
+.field-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+
+.field-hint {
+  font-weight: 400;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.field-input {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 1rem;
+  border: 1px solid var(--border-input);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.field-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(106, 27, 154, 0.18);
+}
+
+/* ── Botão ───────────────────────────────────────────────────── */
+.calc-button {
+  margin-top: 8px;
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  background-color: var(--primary);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: background-color 0.18s;
+}
+
+.calc-button:hover { background-color: var(--primary-dark); }
+
+/* ── Painel de resultado ─────────────────────────────────────── */
+.result-card {
+  margin-top: 24px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  border-left: 5px solid var(--primary);
+  padding: 18px 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
+}
+
+.result-card.error {
+  border-left-color: #c0392b;
+  background: #fff5f5;
+  color: #c0392b;
+  font-weight: 600;
+}
+
+.result-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.result-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.result-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+}
+
+/* ── Badges ──────────────────────────────────────────────────── */
+.euler-badge { margin-bottom: 14px; }
+
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.badge-success { background: #e8f5e9; color: #2e7d32; }
+.badge-neutral { background: var(--border); color: var(--primary-dark); }
+
+/* ── Passo a passo ───────────────────────────────────────────── */
+.steps-box {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+}
+
+.steps-title {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.steps-list { padding-left: 18px; }
+
+.step-item {
+  font-family: Menlo, Consolas, monospace;
+  font-size: 0.88rem;
+  color: var(--text);
+  margin-bottom: 4px;
+  line-height: 1.5;
+}
+
+/* ── Rodapé ──────────────────────────────────────────────────── */
+.page-footer {
+  width: 100%;
+  max-width: 660px;
+  margin-top: 40px;
+  padding: 20px 0 32px;
+  border-top: 2px solid var(--border);
+  text-align: center;
+}
+
+.page-footer p {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin: 3px 0;
+}
+
+/* ── Responsivo ──────────────────────────────────────────────── */
+@media (max-width: 520px) {
+  .page-title      { font-size: 1.4rem; }
+  .calculator-card { padding: 20px 16px 24px; }
+  .result-value    { font-size: 1.6rem; }
+}

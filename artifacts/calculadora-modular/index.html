@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculadora de Potências Modulares</title>
+    <meta name="description" content="Calculadora modular com Teorema de Euler — desenvolvida por Helen Daiane, ProfMat/UEM 2026." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/src/css/style.css" />
+  </head>
+  <body>
+
+    <div class="page-wrapper">
+
+      <main class="page-main">
+
+        <header class="page-header">
+          <div class="header-icon" aria-hidden="true">∑</div>
+          <h1 class="page-title">Calculadora de Potências Modulares</h1>
+          <p class="page-subtitle">
+            Aplica o Teorema de Euler para reduzir expoentes grandes quando
+            <em>mdc(a,&nbsp;n)&nbsp;=&nbsp;1</em>, e exponenciação rápida nos demais casos.
+          </p>
+        </header>
+
+        <div class="calculator-card">
+
+          <div class="field-group">
+            <label for="base" class="field-label">
+              Base <span class="field-hint">(a)</span>
+            </label>
+            <input id="base" type="number" class="field-input" placeholder="Ex: 3" />
+          </div>
+
+          <div class="field-group">
+            <label for="exp" class="field-label">
+              Expoente <span class="field-hint">(b)</span>
+            </label>
+            <input id="exp" type="number" class="field-input" placeholder="Ex: 1000" />
+          </div>
+
+          <div class="field-group">
+            <label for="mod" class="field-label">
+              Módulo <span class="field-hint">(n)</span>
+            </label>
+            <input id="mod" type="number" class="field-input" placeholder="Ex: 7" />
+          </div>
+
+          <button id="btn-calcular" class="calc-button">Calcular</button>
+
+          <div id="output" class="result-card" hidden></div>
+
+        </div>
+
+      </main>
+
+      <footer class="page-footer">
+        <p>Desenvolvido por <strong>Helen Daiane</strong></p>
+        <p>Mestranda no <strong>ProfMat / UEM — 2026</strong></p>
+      </footer>
+
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+
+  </body>
+</html>

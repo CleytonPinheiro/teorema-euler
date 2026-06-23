@@ -28,19 +28,28 @@ body {
   min-height: 100vh;
 }
 
-/* ── Layout ──────────────────────────────────────────────────── */
+/* ── Wrapper externo ─────────────────────────────────────────── */
 .page-wrapper {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 40px 20px 0;
+  padding: 40px 24px 0;
 }
 
-.page-main {
+/* ── Layout de duas colunas ──────────────────────────────────── */
+.page-content {
   width: 100%;
-  max-width: 660px;
-  flex: 1;
+  max-width: 1100px;
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 28px;
+  align-items: start;
+}
+
+/* ── Coluna principal ────────────────────────────────────────── */
+.page-main {
+  min-width: 0;
 }
 
 /* ── Cabeçalho ───────────────────────────────────────────────── */
@@ -80,9 +89,7 @@ body {
 }
 
 /* ── Campos ──────────────────────────────────────────────────── */
-.field-group {
-  margin-bottom: 16px;
-}
+.field-group { margin-bottom: 16px; }
 
 .field-label {
   display: block;
@@ -132,14 +139,14 @@ body {
 
 .calc-button:hover { background-color: var(--primary-dark); }
 
-/* ── Painel de resultado ─────────────────────────────────────── */
+/* ── Resultado ───────────────────────────────────────────────── */
 .result-card {
   margin-top: 24px;
   background: var(--surface);
   border-radius: var(--radius);
   border-left: 5px solid var(--primary);
   padding: 18px 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.06);
 }
 
 .result-card.error {
@@ -170,7 +177,6 @@ body {
   color: var(--primary-dark);
 }
 
-/* ── Badges ──────────────────────────────────────────────────── */
 .euler-badge { margin-bottom: 14px; }
 
 .badge {
@@ -184,7 +190,6 @@ body {
 .badge-success { background: #e8f5e9; color: #2e7d32; }
 .badge-neutral { background: var(--border); color: var(--primary-dark); }
 
-/* ── Passo a passo ───────────────────────────────────────────── */
 .steps-box {
   background: var(--surface-2);
   border: 1px solid var(--border);
@@ -209,29 +214,6 @@ body {
   color: var(--text);
   margin-bottom: 4px;
   line-height: 1.5;
-}
-
-/* ── Rodapé ──────────────────────────────────────────────────── */
-.page-footer {
-  width: 100%;
-  max-width: 660px;
-  margin-top: 40px;
-  padding: 20px 0 32px;
-  border-top: 2px solid var(--border);
-  text-align: center;
-}
-
-.page-footer p {
-  font-size: 0.88rem;
-  color: var(--text-muted);
-  margin: 3px 0;
-}
-
-/* ── Responsivo ──────────────────────────────────────────────── */
-@media (max-width: 520px) {
-  .page-title      { font-size: 1.4rem; }
-  .calculator-card { padding: 20px 16px 24px; }
-  .result-value    { font-size: 1.6rem; }
 }
 
 /* ── Histórico ───────────────────────────────────────────────── */
@@ -272,16 +254,9 @@ body {
   transition: background 0.15s, color 0.15s;
 }
 
-.hist-clear-btn:hover {
-  background: var(--border);
-  color: var(--primary-dark);
-}
+.hist-clear-btn:hover { background: var(--border); color: var(--primary-dark); }
 
-.hist-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
+.hist-list { list-style: none; padding: 0; margin: 0; }
 
 .hist-item {
   display: flex;
@@ -294,7 +269,6 @@ body {
 }
 
 .hist-item:last-child { border-bottom: none; }
-
 .hist-item:hover { background: var(--surface-2); }
 
 .hist-expr {
@@ -304,10 +278,7 @@ body {
   flex: 1;
 }
 
-.hist-expr sup {
-  font-size: 0.65rem;
-  vertical-align: super;
-}
+.hist-expr sup { font-size: 0.65rem; vertical-align: super; }
 
 .hist-equals {
   font-family: Menlo, Consolas, monospace;
@@ -321,4 +292,202 @@ body {
   font-weight: 600;
   padding: 2px 8px;
   border-radius: 20px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   BARRA LATERAL — Teoria do Teorema de Euler
+══════════════════════════════════════════════════════════════ */
+.theory-sidebar {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 0;
+  position: sticky;
+  top: 24px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.theory-sidebar::-webkit-scrollbar { width: 5px; }
+.theory-sidebar::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 10px;
+}
+
+/* ── Cabeçalho do aside ──────────────────────────────────────── */
+.theory-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 20px 16px;
+  background: var(--primary-dark);
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.theory-icon { font-size: 1.3rem; }
+
+.theory-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+}
+
+/* ── Seções ──────────────────────────────────────────────────── */
+.theory-section {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.theory-section:last-child { border-bottom: none; }
+
+.theory-section-title {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--text-muted);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.theory-text {
+  font-size: 0.88rem;
+  color: var(--text);
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+.theory-text:last-child { margin-bottom: 0; }
+
+.theory-text--highlight {
+  background: var(--surface-2);
+  border-left: 3px solid var(--primary);
+  padding: 8px 10px;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 0.92rem;
+  margin-bottom: 14px;
+}
+
+/* ── Fórmula em destaque ─────────────────────────────────────── */
+.theory-formula {
+  background: var(--primary-dark);
+  color: #ffffff;
+  text-align: center;
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  font-family: Georgia, serif;
+  font-size: 1.15rem;
+  letter-spacing: 0.04em;
+  margin: 10px 0;
+}
+
+.theory-formula--sm { font-size: 0.92rem; }
+
+/* ── Grade de exemplos do totiente ──────────────────────────── */
+.theory-examples-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.theory-ex-item {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 7px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ex-label {
+  font-family: Menlo, Consolas, monospace;
+  font-size: 0.82rem;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.ex-value {
+  font-family: Menlo, Consolas, monospace;
+  font-size: 0.9rem;
+  color: var(--primary-dark);
+  font-weight: 700;
+}
+
+.ex-note {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* ── Passos numerados ────────────────────────────────────────── */
+.theory-steps {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.theory-steps li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 0.85rem;
+  line-height: 1.55;
+}
+
+.step-num {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  background: var(--primary);
+  color: #ffffff;
+  border-radius: 50%;
+  font-size: 0.72rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+
+.ex-result {
+  font-size: 1.1rem;
+  color: var(--primary-dark);
+}
+
+/* ── Rodapé ──────────────────────────────────────────────────── */
+.page-footer {
+  width: 100%;
+  max-width: 1100px;
+  margin-top: 40px;
+  padding: 20px 0 32px;
+  border-top: 2px solid var(--border);
+  text-align: center;
+}
+
+.page-footer p {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin: 3px 0;
+}
+
+/* ── Responsivo ──────────────────────────────────────────────── */
+@media (max-width: 860px) {
+  .page-content {
+    grid-template-columns: 1fr;
+  }
+
+  .theory-sidebar {
+    position: static;
+    max-height: none;
+  }
+
+  .page-title { font-size: 1.4rem; }
+  .calculator-card { padding: 20px 16px 24px; }
+  .result-value { font-size: 1.6rem; }
 }

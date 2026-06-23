@@ -1,206 +1,206 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Calculadora de Potências Modulares</title>
-    <meta name="description" content="Calculadora modular com Teorema de Euler — desenvolvida por Helen Daiane, ProfMat/UEM 2026." />
-    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-    <link rel="stylesheet" href="./src/css/style.css" />
-  </head>
-  <body>
+        <head>
+                <meta charset="UTF-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                <title>Calculadora de Potências Modulares</title>
+                <meta name="description" content="Calculadora modular com Teorema de Euler — desenvolvida por Helen Daiane, ProfMat/UEM 2026." />
+                <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+                <link rel="stylesheet" href="./src/css/style.css" />
+        </head>
+        <body>
 
-    <!-- ══════════════════════════════════════════════════════════
-         MODAL DE RESULTADO
-    ══════════════════════════════════════════════════════════ -->
-    <div id="modal" class="modal-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="modal-title">
-      <div class="modal-card">
+                <!-- ══════════════════════════════════════════════════════════
+                                 MODAL DE RESULTADO
+                ══════════════════════════════════════════════════════════ -->
+                <div id="modal" class="modal-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="modal-title">
+                        <div class="modal-card">
 
-        <div class="modal-header">
-          <h2 id="modal-title" class="modal-title">Resultado</h2>
-          <button class="modal-close" aria-label="Fechar">✕</button>
-        </div>
+                                <div class="modal-header">
+                                        <h2 id="modal-title" class="modal-title">Resultado</h2>
+                                        <button class="modal-close" aria-label="Fechar">✕</button>
+                                </div>
 
-        <div id="modal-body" class="modal-content"></div>
+                                <div id="modal-body" class="modal-content"></div>
 
-      </div>
-    </div>
-
-    <!-- ══════════════════════════════════════════════════════════
-         PÁGINA
-    ══════════════════════════════════════════════════════════ -->
-    <div class="page-wrapper">
-
-      <div class="page-content">
-
-        <!-- ── Coluna principal ─────────────────────────────── -->
-        <main class="page-main">
-
-          <header class="page-header">
-            <div class="header-icon" aria-hidden="true">∑</div>
-            <h1 class="page-title">Calculadora de Potências Modulares</h1>
-            <p class="page-subtitle">
-              Aplica o Teorema de Euler para reduzir expoentes grandes quando
-              <em>mdc(a,&nbsp;n)&nbsp;=&nbsp;1</em>, e exponenciação rápida nos demais casos.
-            </p>
-          </header>
-
-          <div class="calculator-card">
-
-            <div class="field-group">
-              <label for="base" class="field-label">
-                Base <span class="field-hint">(a)</span>
-              </label>
-              <input id="base" type="number" class="field-input" placeholder="Ex: 3" />
-            </div>
-
-            <div class="field-group">
-              <label for="exp" class="field-label">
-                Expoente <span class="field-hint">(b)</span>
-              </label>
-              <input id="exp" type="number" class="field-input" placeholder="Ex: 1000" />
-            </div>
-
-            <div class="field-group">
-              <label for="mod" class="field-label">
-                Módulo <span class="field-hint">(n)</span>
-              </label>
-              <input id="mod" type="number" class="field-input" placeholder="Ex: 7" />
-            </div>
-
-            <button id="btn-calcular" class="calc-button">Calcular</button>
-
-            <p id="inline-error" class="inline-error" hidden></p>
-
-          </div>
-
-          <div id="historico" class="hist-container" hidden></div>
-
-        </main>
-
-        <!-- ── Barra lateral direita ────────────────────────── -->
-        <aside class="theory-sidebar">
-
-          <div class="theory-header">
-            <span class="theory-icon" aria-hidden="true">📐</span>
-            <h2 class="theory-title">Teorema de Euler</h2>
-          </div>
-
-          <section class="theory-section">
-            <h3 class="theory-section-title">Enunciado</h3>
-            <p class="theory-text">
-              Se <strong>a</strong> e <strong>n</strong> são inteiros positivos com
-              <em>mdc(a, n) = 1</em>, então:
-            </p>
-            <div class="theory-formula">
-              a<sup>φ(n)</sup> ≡ 1 (mod n)
-            </div>
-            <p class="theory-text">
-              onde <strong>φ(n)</strong> é a <em>função totiente de Euler</em> — o número
-              de inteiros entre 1 e n que são coprimos com n.
-            </p>
-          </section>
-
-          <section class="theory-section">
-            <h3 class="theory-section-title">Função Totiente φ(n)</h3>
-            <p class="theory-text">
-              Para calcular φ(n), usamos a fórmula com a fatoração de n em primos:
-            </p>
-            <div class="theory-formula theory-formula--sm">
-              φ(n) = n · ∏<sub>p|n</sub> (1 − 1/p)
-            </div>
-            <div class="theory-examples-grid">
-              <div class="theory-ex-item">
-                <span class="ex-label">φ(7)</span>
-                <span class="ex-value">= 6</span>
-                <span class="ex-note">(7 é primo)</span>
-              </div>
-              <div class="theory-ex-item">
-                <span class="ex-label">φ(10)</span>
-                <span class="ex-value">= 4</span>
-                <span class="ex-note">{1,3,7,9}</span>
-              </div>
-              <div class="theory-ex-item">
-                <span class="ex-label">φ(12)</span>
-                <span class="ex-value">= 4</span>
-                <span class="ex-note">{1,5,7,11}</span>
-              </div>
-              <div class="theory-ex-item">
-                <span class="ex-label">φ(1)</span>
-                <span class="ex-value">= 1</span>
-                <span class="ex-note">por convenção</span>
-              </div>
-            </div>
-          </section>
-
-          <section class="theory-section">
-            <h3 class="theory-section-title">Exemplo Passo a Passo</h3>
-            <p class="theory-text theory-text--highlight">
-              Calcule <strong>3<sup>1000</sup> mod 7</strong>
-            </p>
-            <ol class="theory-steps">
-              <li>
-                <span class="step-num">1</span>
-                <div>
-                  <strong>Verificar coprimalidade:</strong><br>
-                  mdc(3, 7) = 1 ✓ &nbsp;→ Euler se aplica
+                        </div>
                 </div>
-              </li>
-              <li>
-                <span class="step-num">2</span>
-                <div>
-                  <strong>Calcular φ(7):</strong><br>
-                  7 é primo → φ(7) = 7 − 1 = <strong>6</strong>
+
+                <!-- ══════════════════════════════════════════════════════════
+                                 PÁGINA
+                ══════════════════════════════════════════════════════════ -->
+                <div class="page-wrapper">
+
+                        <div class="page-content">
+
+                                <!-- ── Coluna principal ─────────────────────────────── -->
+                                <main class="page-main">
+
+                                        <header class="page-header">
+                                                <div class="header-icon" aria-hidden="true">∑</div>
+                                                <h1 class="page-title">Calculadora de Potências Modulares</h1>
+                                                <p class="page-subtitle">
+                                                        Aplica o Teorema de Euler para reduzir expoentes grandes quando
+                                                        <em>mdc(a,&nbsp;n)&nbsp;=&nbsp;1</em>, e exponenciação rápida nos demais casos.
+                                                </p>
+                                        </header>
+
+                                        <div class="calculator-card">
+
+                                                <div class="field-group">
+                                                        <label for="base" class="field-label">
+                                                                Base <span class="field-hint">(a)</span>
+                                                        </label>
+                                                        <input id="base" type="number" class="field-input" placeholder="Ex: 3" />
+                                                </div>
+
+                                                <div class="field-group">
+                                                        <label for="exp" class="field-label">
+                                                                Expoente <span class="field-hint">(b)</span>
+                                                        </label>
+                                                        <input id="exp" type="number" class="field-input" placeholder="Ex: 1000" />
+                                                </div>
+
+                                                <div class="field-group">
+                                                        <label for="mod" class="field-label">
+                                                                Módulo <span class="field-hint">(n)</span>
+                                                        </label>
+                                                        <input id="mod" type="number" class="field-input" placeholder="Ex: 7" />
+                                                </div>
+
+                                                <button id="btn-calcular" class="calc-button">Calcular</button>
+
+                                                <p id="inline-error" class="inline-error" hidden></p>
+
+                                        </div>
+
+                                        <div id="historico" class="hist-container" hidden></div>
+
+                          <footer class="page-footer">
+                            <p>Desenvolvido por <strong>Helen Daiane</strong></p>
+                            <p>Mestranda no <strong>ProfMat / UEM — 2026</strong></p>
+                          </footer>
+
+                                </main>
+
+                                <!-- ── Barra lateral direita ────────────────────────── -->
+                                <aside class="theory-sidebar">
+
+                                        <div class="theory-header">
+                                                <span class="theory-icon" aria-hidden="true">📐</span>
+                                                <h2 class="theory-title">Teorema de Euler</h2>
+                                        </div>
+
+                                        <section class="theory-section">
+                                                <h3 class="theory-section-title">Enunciado</h3>
+                                                <p class="theory-text">
+                                                        Se <strong>a</strong> e <strong>n</strong> são inteiros positivos com
+                                                        <em>mdc(a, n) = 1</em>, então:
+                                                </p>
+                                                <div class="theory-formula">
+                                                        a<sup>φ(n)</sup> ≡ 1 (mod n)
+                                                </div>
+                                                <p class="theory-text">
+                                                        onde <strong>φ(n)</strong> é a <em>função totiente de Euler</em> — o número
+                                                        de inteiros entre 1 e n que são coprimos com n.
+                                                </p>
+                                        </section>
+
+                                        <section class="theory-section">
+                                                <h3 class="theory-section-title">Função Totiente φ(n)</h3>
+                                                <p class="theory-text">
+                                                        Para calcular φ(n), usamos a fórmula com a fatoração de n em primos:
+                                                </p>
+                                                <div class="theory-formula theory-formula--sm">
+                                                        φ(n) = n · ∏<sub>p|n</sub> (1 − 1/p)
+                                                </div>
+                                                <div class="theory-examples-grid">
+                                                        <div class="theory-ex-item">
+                                                                <span class="ex-label">φ(7)</span>
+                                                                <span class="ex-value">= 6</span>
+                                                                <span class="ex-note">(7 é primo)</span>
+                                                        </div>
+                                                        <div class="theory-ex-item">
+                                                                <span class="ex-label">φ(10)</span>
+                                                                <span class="ex-value">= 4</span>
+                                                                <span class="ex-note">{1,3,7,9}</span>
+                                                        </div>
+                                                        <div class="theory-ex-item">
+                                                                <span class="ex-label">φ(12)</span>
+                                                                <span class="ex-value">= 4</span>
+                                                                <span class="ex-note">{1,5,7,11}</span>
+                                                        </div>
+                                                        <div class="theory-ex-item">
+                                                                <span class="ex-label">φ(1)</span>
+                                                                <span class="ex-value">= 1</span>
+                                                                <span class="ex-note">por convenção</span>
+                                                        </div>
+                                                </div>
+                                        </section>
+
+                                        <section class="theory-section">
+                                                <h3 class="theory-section-title">Exemplo Passo a Passo</h3>
+                                                <p class="theory-text theory-text--highlight">
+                                                        Calcule <strong>3<sup>1000</sup> mod 7</strong>
+                                                </p>
+                                                <ol class="theory-steps">
+                                                        <li>
+                                                                <span class="step-num">1</span>
+                                                                <div>
+                                                                        <strong>Verificar coprimalidade:</strong><br>
+                                                                        mdc(3, 7) = 1 ✓ &nbsp;→ Euler se aplica
+                                                                </div>
+                                                        </li>
+                                                        <li>
+                                                                <span class="step-num">2</span>
+                                                                <div>
+                                                                        <strong>Calcular φ(7):</strong><br>
+                                                                        7 é primo → φ(7) = 7 − 1 = <strong>6</strong>
+                                                                </div>
+                                                        </li>
+                                                        <li>
+                                                                <span class="step-num">3</span>
+                                                                <div>
+                                                                        <strong>Reduzir o expoente:</strong><br>
+                                                                        1000 mod 6 = <strong>4</strong><br>
+                                                                        <em>pois 1000 = 166×6 + 4</em>
+                                                                </div>
+                                                        </li>
+                                                        <li>
+                                                                <span class="step-num">4</span>
+                                                                <div>
+                                                                        <strong>Aplicar o teorema:</strong><br>
+                                                                        3<sup>1000</sup> ≡ 3<sup>4</sup> (mod 7)
+                                                                </div>
+                                                        </li>
+                                                        <li>
+                                                                <span class="step-num">5</span>
+                                                                <div>
+                                                                        <strong>Calcular 3<sup>4</sup> mod 7:</strong><br>
+                                                                        3<sup>4</sup> = 81 = 11×7 + <strong>4</strong><br>
+                                                                        Resultado: <strong class="ex-result">4</strong>
+                                                                </div>
+                                                        </li>
+                                                </ol>
+                                        </section>
+
+                                        <section class="theory-section">
+                                                <h3 class="theory-section-title">Quando não se aplica?</h3>
+                                                <p class="theory-text">
+                                                        Se <em>mdc(a, n) ≠ 1</em>, o teorema de Euler não garante a redução.
+                                                        Nesse caso a calculadora usa a
+                                                        <strong>exponenciação modular rápida</strong> (<em>square-and-multiply</em>),
+                                                        que é eficiente mesmo para expoentes gigantescos.
+                                                </p>
+                                        </section>
+
+                                </aside>
+
+                        </div>
+
                 </div>
-              </li>
-              <li>
-                <span class="step-num">3</span>
-                <div>
-                  <strong>Reduzir o expoente:</strong><br>
-                  1000 mod 6 = <strong>4</strong><br>
-                  <em>pois 1000 = 166×6 + 4</em>
-                </div>
-              </li>
-              <li>
-                <span class="step-num">4</span>
-                <div>
-                  <strong>Aplicar o teorema:</strong><br>
-                  3<sup>1000</sup> ≡ 3<sup>4</sup> (mod 7)
-                </div>
-              </li>
-              <li>
-                <span class="step-num">5</span>
-                <div>
-                  <strong>Calcular 3<sup>4</sup> mod 7:</strong><br>
-                  3<sup>4</sup> = 81 = 11×7 + <strong>4</strong><br>
-                  Resultado: <strong class="ex-result">4</strong>
-                </div>
-              </li>
-            </ol>
-          </section>
 
-          <section class="theory-section">
-            <h3 class="theory-section-title">Quando não se aplica?</h3>
-            <p class="theory-text">
-              Se <em>mdc(a, n) ≠ 1</em>, o teorema de Euler não garante a redução.
-              Nesse caso a calculadora usa a
-              <strong>exponenciação modular rápida</strong> (<em>square-and-multiply</em>),
-              que é eficiente mesmo para expoentes gigantescos.
-            </p>
-          </section>
+                <script type="module" src="./src/main.js"></script>
 
-        </aside>
-
-      </div>
-
-      <footer class="page-footer">
-        <p>Desenvolvido por <strong>Helen Daiane</strong></p>
-        <p>Mestranda no <strong>ProfMat / UEM — 2026</strong></p>
-      </footer>
-
-    </div>
-
-    <script type="module" src="./src/main.js"></script>
-
-  </body>
+        </body>
 </html>

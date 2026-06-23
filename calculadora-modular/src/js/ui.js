@@ -10,43 +10,68 @@ import { salvarNoHistorico, renderHistorico } from "./history.js";
 const modal     = () => document.getElementById("modal");
 const modalBody = () => document.getElementById("modal-body");
 
-/** Abre o modal com conteúdo HTML */
-function abrirModal(html) {
-  modalBody().innerHTML = html;
-  modal().hidden = false;
+/** Fecha o modal */
+function fecharModal() {
+  modal().classList.remove("is-open");
+  document.body.classList.remove("modal-open");
+}
+
+/** Abre o modal com um nó de conteúdo */
+function abrirModal(node) {
+  const body = modalBody();
+  while (body.firstChild) body.removeChild(body.firstChild);
+  body.appendChild(node);
+  modal().classList.add("is-open");
   document.body.classList.add("modal-open");
   modal().querySelector(".modal-close")?.focus();
 }
 
-/** Fecha o modal */
-function fecharModal() {
-  modal().hidden = true;
-  document.body.classList.remove("modal-open");
+/** Cria um elemento simples com classe e conteúdo opcional */
+function el(tag, cls, text) {
+  const e = document.createElement(tag);
+  if (cls)  e.className = cls;
+  if (text !== undefined) e.textContent = text;
+  return e;
 }
 
-/** Monta o HTML do resultado para o modal */
-function buildResultHTML(a, b, n, res) {
-  const badgeHTML = res.canUseEuler
-    ? `<span class="badge badge-success">Teorema de Euler aplicado</span>`
-    : `<span class="badge badge-neutral">Exponenciação modular rápida</span>`;
+/** Monta o conteúdo do resultado usando DOM (sem innerHTML) */
+function buildResultContent(a, b, n, res) {
+  const frag = document.createDocumentFragment();
 
-  const stepsHTML = res.steps
-    .map(s => `<li class="step-item">${s}</li>`)
-    .join("");
+  /* ── Cabeçalho: expressão + número grande + badge ── */
+  const header = el("div", "modal-result-header");
 
-  return `
-    <div class="modal-result-header">
-      <div class="modal-expr">
-        ${a}<sup>${b}</sup> mod ${n}
-      </div>
-      <div class="modal-result-value">${res.result}</div>
-      <div class="modal-badge">${badgeHTML}</div>
-    </div>
-    <div class="modal-steps">
-      <p class="steps-title">Passo a passo</p>
-      <ol class="steps-list">${stepsHTML}</ol>
-    </div>
-  `;
+  const expr = el("div", "modal-expr");
+  expr.appendChild(document.createTextNode(String(a)));
+  const sup = document.createElement("sup");
+  sup.textContent = String(b);
+  expr.appendChild(sup);
+  expr.appendChild(document.createTextNode(" mod " + n));
+  header.appendChild(expr);
+
+  header.appendChild(el("div", "modal-result-value", String(res.result)));
+
+  const badge = el("div", "modal-badge");
+  const badgeSpan = el(
+    "span",
+    res.canUseEuler ? "badge badge-success" : "badge badge-neutral",
+    res.canUseEuler ? "Teorema de Euler aplicado" : "Exponenciação modular rápida"
+  );
+  badge.appendChild(badgeSpan);
+  header.appendChild(badge);
+
+  frag.appendChild(header);
+
+  /* ── Passos ── */
+  const stepsBox = el("div", "modal-steps");
+  stepsBox.appendChild(el("p", "steps-title", "Passo a passo"));
+  const ol = el("ol", "steps-list");
+  res.steps.forEach(s => ol.appendChild(el("li", "step-item", s)));
+  stepsBox.appendChild(ol);
+
+  frag.appendChild(stepsBox);
+
+  return frag;
 }
 
 /** Mostra erro inline (abaixo do botão) */
@@ -90,7 +115,7 @@ export function calcular() {
     return;
   }
 
-  abrirModal(buildResultHTML(a, b, n, res));
+  abrirModal(buildResultContent(a, b, n, res));
 
   salvarNoHistorico({ a, b, n, result: res.result, canUseEuler: res.canUseEuler });
   renderHistorico(preencherCampos);
